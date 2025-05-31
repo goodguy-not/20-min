@@ -23,7 +23,6 @@ public class Main extends Game {
         UserDataHandler.ensureLocalUserDataExists();
         setScreen(new SignUpMenuView(new SignUpMenuController()));
     }
-
     @Override
     public void render() {
         super.render();
