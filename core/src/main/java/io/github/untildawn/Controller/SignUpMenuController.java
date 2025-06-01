@@ -6,13 +6,19 @@ import io.github.untildawn.Model.User;
 import io.github.untildawn.View.SignUpMenuView;
 
 public class SignUpMenuController {
-    private SignUpMenuView view;
 
-    public void setview(SignUpMenuView view) {
-        this.view = view;
+    private  SignUpMenuView view;
+
+    public void setview(SignUpMenuView temp) {
+        this.view = temp;
+    }
+
+    public SignUpMenuView getView() {
+        return this.view;
     }
 
     public Result signUpButten() {
+        resetFields();
         String username = view.getUsernameText().getText();
         String password = view.getPasswordText().getText();
         String security =  view.getSecurityQuestionText().getText();
@@ -31,11 +37,14 @@ public class SignUpMenuController {
         return new Result("user created",true);
     }
 
+
     public Result gotoLogin() {
-        return null;
+        resetFields();
+        return new Result("login",true);
     }
 
     public Result enterAsGuest() {
+        resetFields();
         return null;
     }
     public boolean isPasswordValid(String pass) {
@@ -43,5 +52,14 @@ public class SignUpMenuController {
             return false;
         }
         return true;
+    }
+
+    private void resetFields() {
+        view.getUsernameText().setText("");
+        view.getPasswordText().setText("");
+        view.getSecurityQuestionText().setText("");
+        view.getPasswordErrorLabel().setText("");
+        view.getSecurityQuestionErrorLabel().setText("");
+        view.getPasswordErrorLabel().setText("");
     }
 }

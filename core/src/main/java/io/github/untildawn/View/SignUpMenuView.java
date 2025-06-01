@@ -20,9 +20,11 @@ import io.github.untildawn.Model.AppAssetManager;
 import io.github.untildawn.Model.Result;
 
 public class SignUpMenuView implements Screen {
+    private static SignUpMenuView signUpMenuView;
+
     private Stage stage;
     private Skin skin;
-    private SignUpMenuController controller;
+    private  SignUpMenuController controller;
     // UI elements
     private Label stageLabel;
     private TextField usernameText, passwordText, securityQuestionText;
@@ -34,7 +36,19 @@ public class SignUpMenuView implements Screen {
     private Sprite defaultAvatarSprite;
     private Label defaultAvatarLabel;
 
-    public SignUpMenuView(SignUpMenuController signUpMenuController) {
+
+    public static SignUpMenuView getInstance(){
+        if(signUpMenuView == null){
+            signUpMenuView = new SignUpMenuView(new SignUpMenuController());
+            return signUpMenuView;
+        }
+        else{
+            return signUpMenuView;
+        }
+    }
+
+
+    private SignUpMenuView(SignUpMenuController signUpMenuController) {
         this.skin = AppAssetManager.getAssetManager().getSkin();
         this.controller = signUpMenuController;
         this.controller.setview(this);

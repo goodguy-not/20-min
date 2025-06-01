@@ -21,7 +21,7 @@ public class Main extends Game {
         main = this;
         batch = new SpriteBatch();
         UserDataHandler.ensureLocalUserDataExists();
-        setScreen(new SignUpMenuView(new SignUpMenuController()));
+        setScreen(SignUpMenuView.getInstance());
     }
     @Override
     public void render() {

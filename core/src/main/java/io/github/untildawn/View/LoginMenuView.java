@@ -1,14 +1,20 @@
 package io.github.untildawn.View;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import io.github.untildawn.Controller.AudioManager;
 import io.github.untildawn.Controller.LoginMenuCOntroller;
+import io.github.untildawn.Main;
 import io.github.untildawn.Model.AppAssetManager;
+import io.github.untildawn.Model.Result;
 
 public class LoginMenuView implements Screen {
     private static LoginMenuView loginMenuView;
@@ -23,7 +29,6 @@ public class LoginMenuView implements Screen {
     private LoginMenuView(LoginMenuCOntroller controller) {
         this.controller = controller;
         controller.setView(this);
-        this.skin = AppAssetManager.getAssetManager().getSkin();
         this.skin = AppAssetManager.getAssetManager().getSkin();
         this.usernameText = new TextField("", skin);
         this.passwordText = new TextField("", skin);
@@ -49,6 +54,29 @@ public class LoginMenuView implements Screen {
     public void show() {
         this.stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
+
+
+        backToSignUPButton.addListener(new ClickListener() {
+           @Override
+           public void clicked (InputEvent event, float x, float y) {
+               AudioManager.clickSound();
+               backToSignUpMethod(controller.backToSignUp());
+           }
+        });
+        forgotPassButton.addListener(new ClickListener() {
+            @Override
+            public void clicked (InputEvent event, float x, float y) {
+                AudioManager.clickSound();
+                forgotPassMethod(controller.forgotPass());
+            }
+        });
+        loginButton.addListener(new ClickListener() {
+           @Override
+           public void clicked (InputEvent event, float x, float y) {
+               AudioManager.clickSound();
+               loginMethod(controller.login());
+           }
+        });
         setActors();
     }
 
@@ -131,4 +159,85 @@ public class LoginMenuView implements Screen {
         stage.addActor(usernameLabel);
         stage.addActor(stageLabel);
     }
+
+    private void backToSignUpMethod(Result result) {
+        if (result.getSuccess()){
+            Main.getMain().setScreen(SignUpMenuView.getInstance());
+        }
+    }
+
+    private void forgotPassMethod(Result result) {
+        if(result.getSuccess()){
+            Main.getMain().setScreen(ForgotPassMenuView.getInstance());
+        }
+    }
+
+    private void loginMethod(Result login) {
+        if (login.getSuccess()){
+            //todo set screen pre game
+        }
+        else if (login.getMassage().equals("fill all the fields")){
+            userError.setText(login.getMassage());
+        }
+        else if (login.getMassage().equals("user not found")){
+            userError.setText(login.getMassage());
+        }
+        else if (login.getMassage().equals("wrong password")){
+            passError.setText(login.getMassage());
+        }
+
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public Skin getSkin() {
+        return skin;
+    }
+
+    public LoginMenuCOntroller getController() {
+        return controller;
+    }
+
+    public TextField getUsernameText() {
+        return usernameText;
+    }
+
+    public TextField getPasswordText() {
+        return passwordText;
+    }
+
+    public Label getUsernameLabel() {
+        return usernameLabel;
+    }
+
+    public Label getPasswordLabel() {
+        return passwordLabel;
+    }
+
+    public TextButton getLoginButton() {
+        return loginButton;
+    }
+
+    public TextButton getBackToSignUPButton() {
+        return backToSignUPButton;
+    }
+
+    public TextButton getForgotPassButton() {
+        return forgotPassButton;
+    }
+
+    public Label getStageLabel() {
+        return stageLabel;
+    }
+
+    public Label getUserError() {
+        return userError;
+    }
+
+    public Label getPassError() {
+        return passError;
+    }
+
 }
